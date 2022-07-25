@@ -3,12 +3,13 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { ChangeEvent, useContext, useState } from 'react';
 import { EntriesContext } from '../../context/entries/EntriesContext';
+import { UIContext } from '../../context/ui';
 
 export const NewEntry = () => {
-    const [isAdding, setIsAdding] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [touched, setTouched] = useState(false);
     const {AddNewEntry} = useContext(EntriesContext)
+    const {isAddingEntry, setIsAddingEntry} = useContext(UIContext);
     const onTextFieldChanged = (event: ChangeEvent <HTMLInputElement | HTMLTextAreaElement>) => {
         setInputValue(event.target.value);
     }
@@ -16,7 +17,7 @@ export const NewEntry = () => {
         if(inputValue.length===0) return;
         console.log({inputValue});
         AddNewEntry(inputValue);
-        setIsAdding(false);
+        setIsAddingEntry(false);
         setTouched(false);
         setInputValue('');
     }
@@ -24,7 +25,7 @@ export const NewEntry = () => {
     <>
         <Box sx={{marginBottom: 2, paddingX:2}}>
             {
-                isAdding ? (
+                isAddingEntry ? (
                     <>
                     <TextField
                         fullWidth
@@ -42,7 +43,7 @@ export const NewEntry = () => {
                     <Box display='flex' justifyContent='space-between'>
                         <Button
                             variant='text'
-                            onClick={()=>setIsAdding(false)}
+                            onClick={()=>setIsAddingEntry(false)}
                         >
                             Cancelar
                         </Button>
@@ -61,7 +62,7 @@ export const NewEntry = () => {
                         startIcon={<AddIcon />}
                         fullWidth
                         variant='outlined'
-                        onClick={()=>setIsAdding(true)}
+                        onClick={()=>setIsAddingEntry(true)}
                     >
                         Agregar Tarea
                     </Button>
