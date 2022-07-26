@@ -8,7 +8,7 @@ import { UIContext } from '../../context/ui';
 export const NewEntry = () => {
     const [inputValue, setInputValue] = useState('');
     const [touched, setTouched] = useState(false);
-    const {AddNewEntry} = useContext(EntriesContext)
+    const {addNewEntry} = useContext(EntriesContext)
     const {isAddingEntry, setIsAddingEntry} = useContext(UIContext);
     const onTextFieldChanged = (event: ChangeEvent <HTMLInputElement | HTMLTextAreaElement>) => {
         setInputValue(event.target.value);
@@ -16,7 +16,7 @@ export const NewEntry = () => {
     const onSave=()=>{
         if(inputValue.length===0) return;
         console.log({inputValue});
-        AddNewEntry(inputValue);
+        addNewEntry(inputValue);
         setIsAddingEntry(false);
         setTouched(false);
         setInputValue('');
