@@ -11,6 +11,7 @@ import { dbEntries } from '../../database';
 import { Layout } from '../../components/layouts';
 import { Entry, EntryStatus } from "../../interfaces";
 import { dateFunctions } from '../../utils';
+import Router from 'next/router';
 
 
 
@@ -26,10 +27,10 @@ interface Props {
 
 export const EntryPage:FC<Props> = ({ entry }) => {
 
-    const { updateEntry } = useContext( EntriesContext );
+    const { updateEntry, deleteEntry } = useContext( EntriesContext );
 
     const [inputValue, setInputValue] = useState( entry.description );
-    const [status, setStatus] = useState<EntryStatus>( entry.status );
+    const [status, setStatus] = useState<EntryStatus>( entry.status as EntryStatus );
     const [touched, setTouched] = useState(false);
 
     const isNotValid =  useMemo(() => inputValue.length <= 0 && touched, [inputValue, touched]);
@@ -53,6 +54,18 @@ export const EntryPage:FC<Props> = ({ entry }) => {
         }
 
         updateEntry( updatedEntry, true );
+    }
+
+    const onDelete = () => {
+        if ( inputValue.trim().length === 0 ) return;
+
+        const deletedEntry: Entry = {
+            ...entry,
+        }
+
+        deleteEntry( deletedEntry, true );
+
+        Router.push(`/`);
     }
 
 
@@ -127,12 +140,16 @@ export const EntryPage:FC<Props> = ({ entry }) => {
         </Grid>
 
 
-        <IconButton sx={{
-            position:'fixed',
-            bottom: 30,
-            right: 30,
-            backgroundColor: 'error.dark'
-        }}>
+        <IconButton 
+            sx={{
+                position:'fixed',
+                bottom: 30,
+                right: 30,
+                backgroundColor: 'error.dark'
+            }}
+            onClick={ onDelete }
+        
+        >
             <DeleteOutlinedIcon />
         </IconButton>
 
